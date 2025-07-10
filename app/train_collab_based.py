@@ -1,3 +1,5 @@
+# This file is for local model training only. Do not run it on Streamlit Cloud.
+
 import pandas as pd
 import pandas as pd
 from surprise import Reader, Dataset, SVD, accuracy
