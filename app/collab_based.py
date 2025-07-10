@@ -1,7 +1,4 @@
 import pandas as pd
-from surprise import Dataset, Reader, SVD
-from surprise.model_selection import train_test_split
-from surprise import accuracy
 
 class CollabRecommender:
     def __init__(self, ratings_csv_path):
@@ -30,6 +27,14 @@ class CollabRecommender:
         top_books = predictions[:n]
         return book_df[book_df['book_id'].isin([bid for bid, _ in top_books])][['title', 'authors']]
 
+    def save_model(self, model_path):
+        import os
+        os.makedirs(os.path.dirname(model_path), exist_ok=True)
+        import joblib
+        joblib.dump(self, model_path)
+
 # Test (örnek kullanım):
-#collab = CollabRecommender("data/ratings.csv")
-#print(collab.recommend_for_user(123, pd.read_csv("data/books.csv")))
+if __name__ == "__main__":
+    collab = CollabRecommender("data/ratings.csv")
+    collab.save_model("models/collab_model.pkl")
+    print("Model saved to models/collab_model.pkl")

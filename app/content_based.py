@@ -1,6 +1,8 @@
 import pandas as pd
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
+import joblib
+import os
 
 class ContentRecommender:
     def __init__(self, books_csv_path):
@@ -34,5 +36,13 @@ class ContentRecommender:
         book_indices = [i[0] for i in sim_scores]
         return self.books.iloc[book_indices][['title', 'authors']]
 
+    def save_model(self, model_path):
+        import os
+        os.makedirs(os.path.dirname(model_path), exist_ok=True)
+        joblib.dump(self, model_path)
+
 # Test (örnek kullanım)
-#if __name__ == "__main__":
+if __name__ == "__main__":
+   model = ContentRecommender("data/books.csv")
+   model.save_model("models/content_model.pkl")
+   print("Model saved to models/content_model.pkl")

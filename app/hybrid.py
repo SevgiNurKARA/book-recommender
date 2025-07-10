@@ -22,7 +22,16 @@ class HybridRecommender:
 
         return ["Please provide either a book title or user ID"]
 
+    def save_model(self, model_path):
+        import os
+        os.makedirs(os.path.dirname(model_path), exist_ok=True)
+        import joblib
+        joblib.dump(self, model_path)
+
 # Test (example usage):
-hybrid = HybridRecommender("data/books.csv", "data/ratings.csv")
-print(hybrid.recommend(user_id=123))
-print(hybrid.recommend(book_title="The Hobbit"))
+if __name__ == "__main__":
+    hybrid = HybridRecommender("data/books.csv", "data/ratings.csv")
+    hybrid.save_model("models/hybrid_model.pkl")
+    print("Model saved to models/hybrid_model.pkl")
+    print(hybrid.recommend(user_id=123))
+    print(hybrid.recommend(book_title="The Hobbit"))

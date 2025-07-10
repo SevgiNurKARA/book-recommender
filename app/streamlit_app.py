@@ -1,6 +1,8 @@
 import streamlit as st
 import pandas as pd
 from hybrid import HybridRecommender
+import joblib
+import os
 
 st.set_page_config(page_title="📚 Book Recommendation System", layout="centered")
 st.title("📚 Book Recommender")
@@ -9,9 +11,13 @@ st.write("Get book suggestions based on content or user preferences.")
 # ⏱️ MODEL CACHE
 @st.cache_resource
 def load_hybrid_model():
-    books_path = "data/books.csv"
-    ratings_path = "data/ratings.csv"
-    return HybridRecommender(books_path, ratings_path)
+    model_path = "models/hybrid_model.pkl"
+    if os.path.exists(model_path):
+        return joblib.load(model_path)
+    else:
+        books_path = "data/books.csv"
+        ratings_path = "data/ratings.csv"
+        return HybridRecommender(books_path, ratings_path)
 
 hybrid = load_hybrid_model()  # <--- cache’lenmiş versiyonu çağır
 
